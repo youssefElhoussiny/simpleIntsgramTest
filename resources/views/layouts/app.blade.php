@@ -10,7 +10,8 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+        {{-- Bootstrap --}}
+        <link rel="stylesheet" href="{{asset('assets/bootstrap.min.css')}}">
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -32,5 +33,7 @@
                 {{ $slot }}
             </main>
         </div>
+        {{-- Bootstrap --}}
+        <script src="{{asset('assets/bootstrap.bundle.min.js')}}"></script>
     </body>
 </html>
