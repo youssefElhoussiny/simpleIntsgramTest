@@ -3,6 +3,7 @@
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -36,4 +37,7 @@ Route::post('/p/create' , [PostController::class , 'store'])->name('store_post')
 Route::get('/p/{post}' , [PostController::class , 'show'])->name('show_post')->middleware('auth');
 
 Route::post('/p/{post}/comment' , [CommentController::class , 'store'])->name('store_comment')->middleware('auth');
+Route::get('/p/edit/{post}' , [PostController::class , 'edit'])->name('edit_post')->middleware('auth');
+Route::patch('/p/update/{post}' , [PostController::class , 'update'])->name('update_post')->middleware('auth');
+Route::delete('/p/delete/{post}' , [PostController::class , 'destroy'])->name('delete_post')->middleware('auth');
 

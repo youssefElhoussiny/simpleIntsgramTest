@@ -12,6 +12,8 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         {{-- Bootstrap --}}
         <link rel="stylesheet" href="{{asset('assets/bootstrap.min.css')}}">
+        {{-- Font awsom --}}
+        <link rel="stylesheet" href="{{asset('assets/all.min.css')}}">
         {{-- My Css Style --}}
         <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
         <!-- Scripts -->
@@ -37,5 +39,7 @@
         </div>
         {{-- Bootstrap --}}
         <script src="{{asset('assets/bootstrap.bundle.min.js')}}"></script>
+        {{-- font awsum --}}
+        <script src="{{asset('assets/all.min.js')}}"></script>
     </body>
 </html>

@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+
+use function PHPUnit\Framework\isNull;
 
 class PostController extends Controller
 {
@@ -53,7 +56,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edite' , compact('post'));
     }
 
     /**
@@ -61,7 +64,18 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $data = $request->validate([
+            "image" =>['nullable','image' , "mimes:png,jpg,jpeg,gif"],
+            "description"=>['required' , 'string' ]
+        ]);
+        if($request->has('image'))
+        {
+            $image = $request['image']->store('posts' , 'public');
+            $data['image'] = $image;
+        }
+        
+      $post->update($data);
+      return redirect('/p/' . $post->id);
     }
 
     /**
@@ -69,6 +83,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        Storage::delete('public/'.$post->image);
+        $post->delete();
+        return redirect('/');
     }
 }

@@ -21,9 +21,25 @@
         <div class="col-3 bg-white p-3 h-full flex flex-col">
             {{-- Top --}}
             
-            <div class="flex items-center border-b-2 pb-2">
-                <img src="{{$post->owner->image}}" alt="{{$post->owner->username}}" class="rounded-full mr-3 h-10 w-10">
+            <div class="flex items-center border-b-2 pb-2 justify-content-between">
+                <div class="flex items-center">
+                    <img src="{{$post->owner->image}}" alt="{{$post->owner->username}}" class="rounded-full mr-3 h-10 w-10">
                 <a href="/{{$post->owner->username}}" class="font-bold">{{$post->owner->username}}</a>
+                </div>
+                @if ($post->user_id == auth()->id())
+                    <div class="flex flex-end justify-content-between gap-2">
+
+                    <a href="{{route("edit_post",$post->id)}}"><i class="fa-regular fa-pen-to-square"></i></a>
+                    <form action="/p/delete/{{$post->id}}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Are you sure')">
+                            <i class="fa-solid fa-trash text-red-600"></i>
+                        </button>
+                    </form>
+                </div>
+                @endif
+                
             </div>
             {{-- End Top --}}
 
