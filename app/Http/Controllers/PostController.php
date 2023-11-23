@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,11 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+       
+        $post=$posts[0];
+       
+        return view('posts.index' , compact(['posts']));
     }
 
     /**
@@ -48,6 +53,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        
         return view('posts.show' , compact('post'));
     }
 
@@ -86,5 +92,15 @@ class PostController extends Controller
         Storage::delete('public/'.$post->image);
         $post->delete();
         return redirect('/');
+    }
+
+    public function explore()
+    {
+        
+        $posts = Post::whereRelation('owner' , 'private_account' , '=' , 0)
+        ->whereNot('user_id' ,auth()->id())
+        ->simplepaginate(9);
+        // dd($posts->toArray());
+        return view('posts.explore' , compact('posts'));
     }
 }

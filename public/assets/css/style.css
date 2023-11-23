@@ -11,3 +11,20 @@ img{
     width: 100%;
     height: calc(100vh - 65px);
 }
+.post-height
+{
+    max-height: 100vh;
+}
+.relative-container {
+    position: relative;
+
+  }
+
+  .absolute-element {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: calc(100% - 1200px);
+    background-color: #faf6f7;
+    padding: 10px;
+  }

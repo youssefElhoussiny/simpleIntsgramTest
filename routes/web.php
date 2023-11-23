@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Models\Post;
 use Illuminate\Support\Facades\Route;
 
@@ -16,11 +18,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-require __DIR__.'/auth.php';
 
-Route::get('/', function () {
-    return view('welcome');
-});
+require __DIR__ . '/auth.php';
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -32,12 +32,22 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/p/create' , [PostController::class , 'create'])->name('create_post')->middleware('auth');
-Route::post('/p/create' , [PostController::class , 'store'])->name('store_post')->middleware('auth');
-Route::get('/p/{post}' , [PostController::class , 'show'])->name('show_post')->middleware('auth');
 
-Route::post('/p/{post}/comment' , [CommentController::class , 'store'])->name('store_comment')->middleware('auth');
-Route::get('/p/edit/{post}' , [PostController::class , 'edit'])->name('edit_post')->middleware('auth');
-Route::patch('/p/update/{post}' , [PostController::class , 'update'])->name('update_post')->middleware('auth');
-Route::delete('/p/delete/{post}' , [PostController::class , 'destroy'])->name('delete_post')->middleware('auth');
+Route::get('/{user:username}',[UserController::class , 'index'])->name('user_profile')->middleware('auth');
+Route::get('/edit/{user:username}' , [UserController::class , 'edit'])->name('user_edit')->middleware('auth');
+Route::put('/update/{user:username}' , [UserController::class , 'update'])->name('user_update')->middleware('auth');
+Route::controller(PostController::class)->middleware('auth')->group(function () {
+    Route::get('/',  'index')->name('home');
+    Route::get('/p/create', 'create')->name('create_post');
+    Route::post('/p/create', 'store')->name('store_post');
+    Route::get('/p/{post}', 'show')->name('show_post');
+    Route::get('/p/edit/{post}', 'edit')->name('edit_post');
+    Route::patch('/p/update/{post}', 'update')->name('update_post');
+    Route::delete('/p/delete/{post}', 'destroy')->name('delete_post');
+
+});
+Route::get('/explore/show' , [PostController::class , 'explore'])->name('explore');
+
+Route::post('/p/{post}/comment', [CommentController::class, 'store'])->name('store_comment')->middleware('auth');
+Route::get('/like/{post}' , LikeController::class)->middleware('auth');
 

@@ -24,6 +24,8 @@ class User extends Authenticatable
         'image',
         'email',
         'password',
+        'bio',
+        'private_account',
     ];
 
     /**
@@ -46,7 +48,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-   
+//    realations
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
@@ -55,5 +57,17 @@ class User extends Authenticatable
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class , 'likes');
+    }
+// end realations
+
+    public function randomUsers()
+    {
+        $randoumUsers=User::whereNot('id',auth()->id())->inRandomOrder()->limit(5)->get();
+        return $randoumUsers;
     }
 }
